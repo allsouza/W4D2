@@ -6,13 +6,20 @@ class Employee
         @title = title
         @salary = salary
         @boss = boss
+        if !@boss.nil? 
+            @boss.add_employee(self)
+        end
     end
 
     def bonus(multiplier)
         bonus = salary * multiplier
     end
 
-    private
+    def inspect
+        { 'name' => @name, 'title' => @title, 'salary' => @salary }.inspect
+    end
+
+    protected
     attr_reader :name, :title, :salary, :boss
 
 end
