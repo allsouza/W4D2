@@ -1,7 +1,9 @@
 require 'byebug'
 
-module Slideable
+  #if encounter piece need to analyse if it same color or not, if not can attack and keep that position.
 
+module Slideable
+  
     HORIZONTAL_DIRS = [[0,-1], [-1,0], [1,0], [0,1]]
     DIAGONAL_DIRS = [[1,1], [1,-1], [-1,-1], [-1,1]]
 #move_dirs passes the direction from the subclass
@@ -32,6 +34,7 @@ module Slideable
             new_x += dx
             new_y += dy
             new_pos = [new_x, new_y]
+            #refactor for null piece
             break if !board[new_pos].nil? || !(0..7).include?(new_y) || !(0..7).include?(new_x)
             result << new_pos
         end
@@ -50,6 +53,7 @@ module Steppable
             results += [[directions[0]+x, directions[1] + y]]
         end
         # debugger
+        #refactor for null piece
         results.reject {|pos| !board[pos].nil? || !(0..7).include?(pos[1]) || !(0..7).include?(pos[0]) }
     end
 
