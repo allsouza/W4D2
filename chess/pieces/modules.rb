@@ -1,6 +1,7 @@
 require 'byebug'
 
   #if encounter piece need to analyse if it same color or not, if not can attack and keep that position.
+  #add .freeze to the end of our constant arrays
 
 module Slideable
   
@@ -34,8 +35,12 @@ module Slideable
             new_x += dx
             new_y += dy
             new_pos = [new_x, new_y]
-            #refactor for null piece
-            break if !board[new_pos].nil? || !(0..7).include?(new_y) || !(0..7).include?(new_x)
+            break if !(0..7).include?(new_y) || !(0..7).include?(new_x)
+            if !board[new_pos].is_a?(NullPiece)
+                # debugger
+                result << new_pos if board[new_pos].color != self.color
+                break
+            end
             result << new_pos
         end
         return result
@@ -47,14 +52,16 @@ module Steppable
     KING_MOVES = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1]]
 
     def moves
+        # debugger
         results = []
         x,y = position
         move_diffs.each do |directions|
             results += [[directions[0]+x, directions[1] + y]]
         end
         # debugger
-        #refactor for null piece
-        results.reject {|pos| !board[pos].nil? || !(0..7).include?(pos[1]) || !(0..7).include?(pos[0]) }
+        results.reject do |pos| 
+            !(0..7).include?(pos[1]) || !(0..7).include?(pos[0]) || (!board[pos].is_a?(NullPiece) && board[pos].color == self.color)
+        end
     end
 
     def king_moves

@@ -1,9 +1,11 @@
 require 'singleton'
+require 'colorize'
 
 class NullPiece < Piece
     include Singleton
 
     def initialize
+        @symbol = "■".colorize(:light_black)
     end
 
     def moves
@@ -11,7 +13,7 @@ class NullPiece < Piece
     end
     
     def symbol
-        " "
+        @symbol
     end
 
 end
